@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>前世今生大揭秘</title>
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,13 +21,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: auto;
         }
-        h1 {
-            color: #333;
-        }
-        .question {
-            margin: 20px 0;
-            font-size: 18px;
-        }
+        h1 { color: #333; }
+        .question { margin: 20px 0; font-size: 18px; }
         .options button {
             display: block;
             width: 100%;
@@ -37,14 +34,9 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .options button:hover {
-            background: #0056b3;
-        }
-        #result, #long-test, #report {
-            display: none;
-            font-size: 20px;
-            margin-top: 20px;
-        }
+        .options button:hover { background: #0056b3; }
+        #result, #long-test, #report-section { display: none; font-size: 
+20px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -78,10 +70,10 @@
 查看完整报告</button>
         </div>
 
-        <div id="report">
+        <div id="report-section">
             <h2>完整测试报告</h2>
-            <p id="report-text"></p>
-            <button onclick="downloadReport()">📥 下载 PDF 报告</button>
+            <p>完整报告已生成，您可下载 PDF。</p>
+            <button onclick="generatePDF()">📄 下载 PDF 报告</button>
         </div>
     </div>
 
@@ -101,7 +93,7 @@
             ["🎯 目标 & 计划", "🌿 体验 & 感受"],
             ["👀 观察者", "🔥 领导者"]
         ];
-        
+
         function nextQuestion(choice) {
             if (questionIndex < questions.length - 1) {
                 questionIndex++;
@@ -150,13 +142,31 @@ longQuestions[longIndex];
         
         function finishLongTest() {
             document.getElementById("long-test").style.display = "none";
-            document.getElementById("report").style.display = "block";
-            document.getElementById("report-text").innerText = 
-"完整报告已生成，您可下载 PDF。";
+            document.getElementById("report-section").style.display = 
+"block";
         }
 
-        function downloadReport() {
-            alert("正在下载您的 PDF 报告...");
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(20);
+            doc.text("完整测试报告", 20, 20);
+
+            let reportContent = `
+                🎭 你的灵魂结构：中等魂爱灵
+                📌 你擅长的领域：创意 & 逻辑思维
+                🏆 推荐职业方向：设计师、编程工程师
+                ❤️ 你的理想配偶类型：情感型 & 支持型
+            `;
+
+            let y = 40;
+            reportContent.split("\n").forEach(line => {
+                doc.text(line, 20, y);
+                y += 10;
+            });
+
+            doc.save("灵魂测试报告.pdf");
         }
     </script>
 </body>

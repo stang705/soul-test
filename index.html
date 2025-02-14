@@ -37,6 +37,7 @@ initial-scale=1.0">
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            transition: background 0.3s;
         }
         .options button:hover {
             background: #0056b3;
@@ -45,6 +46,19 @@ initial-scale=1.0">
             display: none;
             font-size: 20px;
             margin-top: 20px;
+        }
+        .progress {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #28a745;
+            transition: width 0.5s;
         }
     </style>
 </head>
@@ -55,27 +69,33 @@ initial-scale=1.0">
         
 <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
         <p>3-5 分钟内呈现一览无余！</p>
+        
+        <div class="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
 
         <div id="quiz">
             <p class="question" id="question-text">1. 
 你更喜欢以下哪种活动？</p>
             <div class="options" id="options">
-                <button onclick="nextQuestion(1)">📖 阅读 & 
-思考</button>
-                <button onclick="nextQuestion(2)">💬 社交 & 
-交流</button>
+                <button onclick="selectAnswer(0, '理性型')">📖 阅读 
+& 思考</button>
+                <button onclick="selectAnswer(1, '感性型')">💬 社交 
+& 交流</button>
             </div>
         </div>
 
         <div id="result">
             <h2>你的灵魂结构是：</h2>
-            <p id="result-text">中等魂爱灵 😊 
-你在理性和感性之间找到平衡！</p>
+            <p id="result-text"></p>
+            <h3>适合职业：</h3>
+            <p id="career-text"></p>
         </div>
     </div>
 
     <script>
         let questionIndex = 0;
+        let scores = { "理性型": 0, "感性型": 0 };
         const questions = [
             "1. 你更喜欢以下哪种活动？",
             "2. 你更容易被哪种情绪影响？",
@@ -91,24 +111,49 @@ initial-scale=1.0">
             ["👀 观察者", "🔥 领导者"]
         ];
         
-        function nextQuestion(choice) {
+        function selectAnswer(choice, type) {
+            scores[type]++;
             if (questionIndex < questions.length - 1) {
                 questionIndex++;
-                document.getElementById("question-text").innerText = 
-questions[questionIndex];
-                let newOptions = "";
-                options[questionIndex].forEach((option, index) => {
-                    newOptions += `<button 
-onclick="nextQuestion(${index + 1})">${option}</button>`;
-                });
-                document.getElementById("options").innerHTML = 
-newOptions;
+                updateQuestion();
+                updateProgressBar();
             } else {
-                document.getElementById("quiz").style.display = 
-"none";
-                document.getElementById("result").style.display = 
-"block";
+                showResult();
             }
+        }
+
+        function updateQuestion() {
+            document.getElementById("question-text").innerText = 
+questions[questionIndex];
+            let newOptions = "";
+            options[questionIndex].forEach((option, index) => {
+                let type = index === 0 ? "理性型" : "感性型";
+                newOptions += `<button 
+onclick="selectAnswer(${index}, '${type}')">${option}</button>`;
+            });
+            document.getElementById("options").innerHTML = 
+newOptions;
+        }
+        
+        function updateProgressBar() {
+            let progress = ((questionIndex + 1) / questions.length) 
+* 100;
+            document.getElementById("progress-bar").style.width = 
+progress + "%";
+        }先
+
+        function showResult() {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = 
+"block";
+            let resultType = scores["理性型"] > scores["感性型"] ? 
+"中等魂爱灵" : "中等魂恨灵";
+            let career = resultType === "中等魂爱灵" ? "🔬 
+适合科学研究、工程、分析工作" : "🎭 适合艺术创作、公关、社交职业";
+            document.getElementById("result-text").innerText = 
+resultType + " 😊";
+            document.getElementById("career-text").innerText = 
+career;
         }
     </script>
 </body>

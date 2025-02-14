@@ -23,6 +23,20 @@ initial-scale=1.0">
         h1 {
             color: #333;
         }
+        .progress {
+            height: 10px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #007BFF;
+            transition: width 0.5s;
+        }
         .question {
             margin: 20px 0;
             font-size: 18px;
@@ -37,7 +51,6 @@ initial-scale=1.0">
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            transition: background 0.3s;
         }
         .options button:hover {
             background: #0056b3;
@@ -46,19 +59,6 @@ initial-scale=1.0">
             display: none;
             font-size: 20px;
             margin-top: 20px;
-        }
-        .progress {
-            height: 10px;
-            background: #ddd;
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: #28a745;
-            transition: width 0.5s;
         }
     </style>
 </head>
@@ -69,33 +69,36 @@ initial-scale=1.0">
         
 <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
         <p>3-5 分钟内呈现一览无余！</p>
-        
+
         <div class="progress">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
 
         <div id="quiz">
-            <p class="question" id="question-text">1. 
-你更喜欢以下哪种活动？</p>
-            <div class="options" id="options">
-                <button onclick="selectAnswer(0, '理性型')">📖 阅读 
-& 思考</button>
-                <button onclick="selectAnswer(1, '感性型')">💬 社交 
-& 交流</button>
-            </div>
+            <p class="question" id="question-text"></p>
+            <div class="options" id="options"></div>
         </div>
 
         <div id="result">
             <h2>你的灵魂结构是：</h2>
-            <p id="result-text"></p>
-            <h3>适合职业：</h3>
-            <p id="career-text"></p>
+            <p id="soul-result"></p>
+            <h3>可能的 MBTI 类型：</h3>
+            <p id="mbti-result"></p>
+            <h3>适合的 Ivy Talent 8 职业方向：</h3>
+            <p id="career-result"></p>
+            <h3>你的理想灵魂伴侣：</h3>
+            <p id="soulmate-result"></p>
+            <h3>灵魂成长轨迹：</h3>
+            <p id="soul-growth"></p>
+            <h3>如何优化你的灵魂方向？</h3>
+            <p id="soul-guidance"></p>
         </div>
     </div>
 
     <script>
         let questionIndex = 0;
-        let scores = { "理性型": 0, "感性型": 0 };
+        let userChoices = [];
+
         const questions = [
             "1. 你更喜欢以下哪种活动？",
             "2. 你更容易被哪种情绪影响？",
@@ -110,51 +113,85 @@ initial-scale=1.0">
             ["🎯 目标 & 计划", "🌿 体验 & 感受"],
             ["👀 观察者", "🔥 领导者"]
         ];
-        
-        function selectAnswer(choice, type) {
-            scores[type]++;
+
+        const soulTypes = ["极端魂爱灵", "中等魂爱灵", "魂无感", 
+"中等魂恨灵", "极端魂恨灵"];
+        const mbtiTypes = ["INTJ", "ENTP", "INFJ", "ESFP", "ISTP"];
+        const careers = ["科技研发", "市场营销", "艺术创作", 
+"企业管理", "自由职业"];
+        const soulmates = ["支持型伴侣", "灵魂知己", "互补型伴侣", 
+"挑战型伴侣", "独立伴侣"];
+        const soulGrowth = [
+            "你的灵魂结构较稳定，通常不会轻易改变。",
+            "你可能在未来转向更加理性或感性，需要根据环境适应。",
+            "你的灵魂可能趋于中立，在不同阶段表现不同的倾向。",
+            "你的灵魂发展方向存在波动，可能逐渐偏向极端。",
+            "你的灵魂经历过较大冲突，可能发生剧烈转变。"
+        ];
+        const soulGuidance = [
+            "建议你保持稳定，利用自身优势，避免过度受环境影响。",
+            "建议多接触不同视角，发展更均衡的思维模式。",
+            "建议定期反思自己的决策，避免情绪化影响选择。",
+            "建议加强自我调节，找到适合自己的成长方向。",
+            "建议慎重面对人生关键决策，避免走向不可逆的极端。"
+        ];
+
+        function startQuiz() {
+            document.getElementById("question-text").innerText = 
+questions[0];
+            let newOptions = "";
+            options[0].forEach((option, index) => {
+                newOptions += `<button 
+onclick="nextQuestion(${index})">${option}</button>`;
+            });
+            document.getElementById("options").innerHTML = 
+newOptions;
+        }
+
+        function nextQuestion(choice) {
+            userChoices.push(choice);
             if (questionIndex < questions.length - 1) {
                 questionIndex++;
-                updateQuestion();
-                updateProgressBar();
+                document.getElementById("question-text").innerText = 
+questions[questionIndex];
+                let newOptions = "";
+                options[questionIndex].forEach((option, index) => {
+                    newOptions += `<button 
+onclick="nextQuestion(${index})">${option}</button>`;
+                });
+                document.getElementById("options").innerHTML = 
+newOptions;
+
+                document.getElementById("progress-bar").style.width 
+= ((questionIndex + 1) / questions.length * 100) + "%";
             } else {
                 showResult();
             }
         }
 
-        function updateQuestion() {
-            document.getElementById("question-text").innerText = 
-questions[questionIndex];
-            let newOptions = "";
-            options[questionIndex].forEach((option, index) => {
-                let type = index === 0 ? "理性型" : "感性型";
-                newOptions += `<button 
-onclick="selectAnswer(${index}, '${type}')">${option}</button>`;
-            });
-            document.getElementById("options").innerHTML = 
-newOptions;
-        }
-        
-        function updateProgressBar() {
-            let progress = ((questionIndex + 1) / questions.length) 
-* 100;
-            document.getElementById("progress-bar").style.width = 
-progress + "%";
-        }先
-
         function showResult() {
             document.getElementById("quiz").style.display = "none";
             document.getElementById("result").style.display = 
 "block";
-            let resultType = scores["理性型"] > scores["感性型"] ? 
-"中等魂爱灵" : "中等魂恨灵";
-            let career = resultType === "中等魂爱灵" ? "🔬 
-适合科学研究、工程、分析工作" : "🎭 适合艺术创作、公关、社交职业";
-            document.getElementById("result-text").innerText = 
-resultType + " 😊";
-            document.getElementById("career-text").innerText = 
-career;
+
+            const soulIndex = userChoices.reduce((sum, val) => sum + 
+val, 0) % soulTypes.length;
+            document.getElementById("soul-result").innerText = 
+soulTypes[soulIndex];
+
+            document.getElementById("mbti-result").innerText = 
+mbtiTypes[soulIndex];
+            document.getElementById("career-result").innerText = 
+careers[soulIndex];
+            document.getElementById("soulmate-result").innerText = 
+soulmates[soulIndex];
+            document.getElementById("soul-growth").innerText = 
+soulGrowth[soulIndex];
+            document.getElementById("soul-guidance").innerText = 
+soulGuidance[soulIndex];
         }
+
+        startQuiz();
     </script>
 </body>
 </html>

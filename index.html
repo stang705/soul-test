@@ -6,9 +6,15 @@
     <title>前世今生大揭秘</title>
     <script 
 src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script 
+src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Arial", sans-serif;
             text-align: center;
             background-color: #f4f4f4;
             padding: 20px;
@@ -150,6 +156,7 @@ longQuestions[longIndex];
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
+            doc.setFont("helvetica", "bold");
             doc.setFontSize(20);
             doc.text("完整测试报告", 20, 20);
 

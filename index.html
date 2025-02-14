@@ -5,53 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>前世今生大揭秘</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 100px auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .question { margin: 15px 0; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #result { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
+    <h1>前世今生大揭秘</h1>
+    <h2>天赋，职场，婚姻一站搞定</h2>
+    <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
+    
+    <form id="quizForm">
+        <div class="question">
+            <p>1. 你更喜欢以下哪种活动？</p>
+            <label><input type="radio" name="q1" value="a"> 阅读 & 思考</label>
+            <label><input type="radio" name="q1" value="b"> 社交 & 交流</label>
+        </div>
 
-    <div class="container">
-        <h1>前世今生大揭秘</h1>
-        <h2>天赋，职场，婚姻一站搞定</h2>
-        <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
-        <p>3-5 分钟内呈现一览无余！</p>
-        <a href="test.html" class="btn">开始测试</a>
-    </div>
-<p>网站已更新！测试版本</p>
+        <div class="question">
+            <p>2. 你更容易被哪种情绪影响？</p>
+            <label><input type="radio" name="q2" value="a"> 理性，逻辑</label>
+            <label><input type="radio" name="q2" value="b"> 情感，直觉</label>
+        </div>
 
+        <div class="question">
+            <p>3. 你喜欢以下哪种职业？</p>
+            <label><input type="radio" name="q3" value="a"> 科学家 / 工程师</label>
+            <label><input type="radio" name="q3" value="b"> 艺术家 / 公关</label>
+        </div>
+
+        <div class="question">
+            <p>4. 你更关注？</p>
+            <label><input type="radio" name="q4" value="a"> 目标 & 计划</label>
+            <label><input type="radio" name="q4" value="b"> 体验 & 感受</label>
+        </div>
+
+        <div class="question">
+            <p>5. 你在社交场合更像？</p>
+            <label><input type="radio" name="q5" value="a"> 观察者</label>
+            <label><input type="radio" name="q5" value="b"> 领导者</label>
+        </div>
+
+        <button type="button" onclick="calculateResult()">提交答案</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateResult() {
+            let score = 0;
+            const answers = document.querySelectorAll("input[type='radio']:checked");
+            
+            if (answers.length < 5) {
+                alert("请回答所有问题！");
+                return;
+            }
+
+            answers.forEach(ans => {
+                if (ans.value === "a") score += 1;
+            });
+
+            let resultText = "";
+            if (score >= 4) {
+                resultText = "你的灵魂结构是：极端魂爱灵 🏆 你是天生的领导者，擅长规划未来！";
+            } else if (score >= 2) {
+                resultText = "你的灵魂结构是：中等魂爱灵 😊 你在理性和感性之间找到平衡！";
+            } else {
+                resultText = "你的灵魂结构是：魂爱魂 🎭 你更重视体验，喜欢自由和探索！";
+            }
+
+            document.getElementById("result").innerText = resultText;
+        }
+    </script>
 </body>
 </html>
-

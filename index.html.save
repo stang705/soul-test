@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, 
+initial-scale=1.0">
+    <title>前世今生大揭秘</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>前世今生大揭秘</h1>
+        <h2>天赋，职场，婚姻一站搞定</h2>
+        
+<p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
+        <p>3-5 分钟内呈现一览无余！</p>
+        <a href="test.html" class="btn">开始测试</a>
+    </div>
+
+</body>
+</html>
+<!DOCTYPE 
+html> <html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, 
+initial-scale=1.0">
+    <title>前世今生大揭秘</title>
+</head>
+<body>
+    <h1>前世今生大揭秘</h1>
+    <h2>天赋，职场，婚姻一站搞定</h2>
+    
+<p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
+    <p>3-5 分钟内呈现一览无余！</p>
+</body>
+</html>
+
+
+
+
+<h1>Hello, this is my 
+websi快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
+    <p>3-5 分钟内呈现一览无余！</p>
+</body>     
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前世今生大揭秘</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>前世今生大揭秘</h1>
+        <h2>天赋，职场，婚姻一站搞定</h2>
+        <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
+        <p>3-5 分钟内呈现一览无余！</p>
+        <a href="test.html" class="btn">开始测试</a>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

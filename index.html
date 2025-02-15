@@ -296,47 +296,32 @@ finishLongTest()
 {
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }
-    function generatePDF() {
+     function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
+
+    // 确保获取到的元素存在，否则提供默认值
+    let userId = document.getElementById("user-id")?.innerText || 
+"未定义用户";
+    let testDate = document.getElementById("test-date")?.innerText || 
+"未记录日期";
+    let soulType = document.getElementById("soul-type")?.innerText || 
+"未定义";
+    let reportContent = 
+document.getElementById("report-content")?.innerText || "未生成报告";
+
     doc.setFont("helvetica");
-
-    // 📌 标题
-    doc.setFontSize(18);
     doc.text("🔮 前世今生大揭秘", 20, 20);
+    doc.text(`用户 ID：${userId}`, 20, 40);
+    doc.text(`测试日期：${testDate}`, 20, 50);
+    doc.text(`灵魂结构：${soulType}`, 20, 60);
 
-    // 📌 基本信息
-    doc.setFontSize(12);
-    doc.text(`用户 ID: ${userId}`, 20, 40);
-    doc.text(`测试日期: ${testDate}`, 20, 50);
-    doc.text(`灵魂结构: ${soulType}`, 20, 60);
-
-    // 📌 第一页 - 短板内容
-    doc.text("你的灵魂结构决定了你的思维方式、职业倾向和人际关系模式……", 
-20, 80);
-
-    if (isLongTest) {
-        // 📌 第二页 - MBTI & Big Five 分析
-        doc.addPage();
-        doc.text("💡 你的核心特点（MBTI & Big Five）", 20, 20);
-        doc.text("你属于…（详细 MBTI 分析）", 20, 40);
-
-        // 📌 第三页 - 职业推荐 & 关系分析
-        doc.addPage();
-        doc.text("💼 你的最佳职业方向", 20, 20);
-        doc.text("你适合的职业是…（分析）", 20, 40);
-
-        // 📌 第四页 - IT8 专属分析（如果是 IT8）
-        if (isIT8) {
-            doc.addPage();
-            doc.text("🏆 IT8 专属职业分析", 20, 20);
-            doc.text("你的天赋来自…", 20, 40);
-        }
-    }
+    // 自动换行的报告内容
+    let splitContent = doc.splitTextToSize(reportContent, 180);
+    doc.text(splitContent, 20, 80);
 
     doc.save("soul_report.pdf");
 }
-
 </script>
 
 </body>

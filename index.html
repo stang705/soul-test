@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>前世今生大揭秘</title>
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -294,9 +297,18 @@ finishLongTest()
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }
     function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+      // 确保 jsPDF 正确加载
+    const { jsPDF } = window.jspdf || {};
+    if (!jsPDF) {
+        alert("jsPDF 加载失败，请检查网络连接！");
+        return;
+    }
 
+    // 创建 PDF 文档
+    const doc = new jsPDF();
+    doc.setFont("helvetica");
+
+    // 获取测试者信息
     let userId = document.getElementById("user-id")?.innerText || "未知";
     let testDate = document.getElementById("test-date")?.innerText || 
 "未记录";

@@ -153,41 +153,96 @@ onclick="nextShortQuestion(${index})">${option}</button>`;
     }
 
     // 长板问卷题目（仅列出 10 题，可添加至 30 题）
-    const longQuestions = [
-        "1. 你在工作中更喜欢？",
-        "2. 你如何做决定？",
-        "3. 你对新事物的接受度如何？",
-        "4. 你喜欢单独工作还是团队合作？",
-        "5. 你更擅长处理数据还是人与人之间的关系？",
-        "6. 你对未来的规划方式是？",
-        "7. 你觉得自己属于逻辑分析型还是创造型？",
-        "8. 你是否容易受环境影响？",
-        "9. 你如何看待规则？",
-        "10. 你更喜欢哪种学习方式？"
-    ];
+const longQuestions = [
+    "1. 你在工作中更喜欢？",
+    "2. 你如何做决定？",
+    "3. 你对新事物的接受度如何？",
+    "4. 你喜欢单独工作还是团队合作？",
+    "5. 你更擅长处理数据还是人与人之间的关系？",
+    "6. 你对未来的规划方式是？",
+    "7. 你觉得自己属于逻辑分析型还是创造型？",
+    "8. 你是否容易受环境影响？",
+    "9. 你如何看待规则？",
+    "10. 你更喜欢哪种学习方式？",
+    "11. 你在社交场合的行为倾向？",
+    "12. 你更喜欢按部就班还是随遇而安？",
+    "13. 你在压力下的表现？",
+    "14. 你喜欢挑战自我吗？",
+    "15. 你对细节的关注度如何？",
+    "16. 你更喜欢有明确目标的工作还是自由发挥的工作？",
+    "17. 你是否容易冲动？",
+    "18. 你更喜欢领导团队还是服从领导？",
+    "19. 你对稳定工作的态度如何？",
+    "20. 你更喜欢哪种思维模式？",
+    "21. 你是否容易拖延？",
+    "22. 你是否经常质疑权威？",
+    "23. 你喜欢通过经验还是理论学习？",
+    "24. 你认为自己是外向型还是内向型？",
+    "25. 你如何处理矛盾？",
+    "26. 你认为自己的创造力如何？",
+    "27. 你是否喜欢冒险？",
+    "28. 你对陌生人的态度如何？",
+    "29. 你更喜欢哪种表达方式？",
+    "30. 你如何面对失败？"
+];
 
-    let longIndex = 0;
+const longOptions = [
+    ["💼 实践工作", "📚 研究型工作"],
+    ["🔍 依靠数据", "🎭 依靠直觉"],
+    ["🚀 积极尝试", "🐢 保守接受"],
+    ["🤝 团队合作", "🧑‍💻 独立工作"],
+    ["📊 数据分析", "🎤 关系管理"],
+    ["📅 长远规划", "🔄 随机应变"],
+    ["🧠 逻辑分析", "🎨 创意发散"],
+    ["🌿 容易影响", "🪨 不受影响"],
+    ["📜 严格遵守", "🎭 适当灵活"],
+    ["📖 书本学习", "🛠 实践操作"],
+    ["🎉 主动交际", "🧐 观察分析"],
+    ["📌 计划行事", "🌊 灵活应变"],
+    ["⚡ 快速应对", "🧘 冷静思考"],
+    ["🚀 喜欢挑战", "🏖️ 低风险偏好"],
+    ["🔍 关注细节", "🌎 大局思维"],
+    ["🎯 目标驱动", "🕊️ 自由发挥"],
+    ["🔥 冲动行事", "🌊 冷静分析"],
+    ["🗣️ 领导团队", "📋 服从指令"],
+    ["🔒 稳定优先", "🚀 机会优先"],
+    ["📊 逻辑思维", "🎨 直觉感知"],
+    ["⏳ 经常拖延", "⚡ 高效执行"],
+    ["❓ 质疑权威", "✅ 服从规则"],
+    ["🧪 经验学习", "📖 理论学习"],
+    ["😃 外向社交", "😌 内向思考"],
+    ["🤝 协商解决", "🏹 坚持立场"],
+    ["🎨 创意无限", "🔍 逻辑推理"],
+    ["🎢 喜欢冒险", "🛡️ 规避风险"],
+    ["👋 友好开放", "🛑 保持距离"],
+    ["📢 直接表达", "📝 书面表达"],
+    ["💪 积极面对", "😭 逃避现实"]
+];
 
-    function loadLongTest() {
-        if (longIndex < longQuestions.length) {
-            document.getElementById("long-question-text").innerText = 
+let longIndex = 0;
+
+function loadLongTest() {
+    if (longIndex < longQuestions.length) {
+        document.getElementById("long-question-text").innerText = 
 longQuestions[longIndex];
-            document.getElementById("long-options").innerHTML = `
-                <button onclick="nextLongQuestion()">选项 A</button>
-                <button onclick="nextLongQuestion()">选项 B</button>
-            `;
-        } else {
-            document.getElementById("long-options").innerHTML = "";
-            document.querySelector("#long-test button").style.display = 
+        document.getElementById("long-options").innerHTML = `
+            <button 
+onclick="nextLongQuestion(0)">${longOptions[longIndex][0]}</button>
+            <button 
+onclick="nextLongQuestion(1)">${longOptions[longIndex][1]}</button>
+        `;
+    } else {
+        document.getElementById("long-options").innerHTML = "";
+        document.querySelector("#long-test button").style.display = 
 "block";
-        }
     }
+}
 
-    function nextLongQuestion() {
-        longIndex++;
-        loadLongTest();
-    }
-
+function nextLongQuestion(choice) {
+    longAnswers.push(choice);
+    longIndex++;
+    loadLongTest();
+}
     function finishLongTest() {
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }

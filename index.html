@@ -4,17 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>前世今生大揭秘</title>
-    <script 
-src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script 
-src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-    <script 
-src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script 
-src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
-            font-family: "Arial", sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f4;
             padding: 20px;
@@ -27,8 +19,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></scri
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: auto;
         }
-        h1 { color: #333; }
-        .question { margin: 20px 0; font-size: 18px; }
+        .question {
+            margin: 20px 0;
+            font-size: 18px;
+        }
         .options button {
             display: block;
             width: 100%;
@@ -40,9 +34,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></scri
             cursor: pointer;
             border-radius: 5px;
         }
-        .options button:hover { background: #0056b3; }
-        #result, #long-test, #report-section { display: none; font-size: 
-20px; margin-top: 20px; }
+        .options button:hover {
+            background: #0056b3;
+        }
+        #result, #long-test {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -52,22 +50,20 @@ src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></scri
         <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
         <p>3-5 分钟内呈现一览无余！</p>
 
-        <div id="quiz">
-            <p class="question" id="question-text">1. 
-你更喜欢以下哪种活动？</p>
-            <div class="options" id="options">
-                <button onclick="nextQuestion(1)">📖 阅读 & 思考</button>
-                <button onclick="nextQuestion(2)">💬 社交 & 交流</button>
-            </div>
+        <!-- 短板问卷 -->
+        <div id="short-quiz">
+            <p class="question" id="short-question-text"></p>
+            <div class="options" id="short-options"></div>
         </div>
 
+        <!-- 短板结果 -->
         <div id="result">
             <h2>你的灵魂结构是：</h2>
-            <p id="result-text">中等魂爱灵 😊 
-你在理性和感性之间找到平衡！</p>
+            <p id="result-text"></p>
             <button onclick="startLongTest()">📜 继续深入测试</button>
         </div>
 
+        <!-- 长板问卷 -->
         <div id="long-test">
             <h2>长版测试（30 题）</h2>
             <p class="question" id="long-question-text"></p>
@@ -75,107 +71,106 @@ src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></scri
             <button onclick="finishLongTest()" style="display: none;">🔍 
 查看完整报告</button>
         </div>
-
-        <div id="report-section">
-            <h2>完整测试报告</h2>
-            <p>完整报告已生成，您可下载 PDF。</p>
-            <button onclick="generatePDF()">📄 下载 PDF 报告</button>
-        </div>
     </div>
 
-    <script>
-        let questionIndex = 0;
-        const questions = [
-            "1. 你更喜欢以下哪种活动？",
-            "2. 你更容易被哪种情绪影响？",
-            "3. 你喜欢以下哪种职业？",
-            "4. 你更关注？",
-            "5. 你在社交场合更像？"
-        ];
-        const options = [
-            ["📖 阅读 & 思考", "💬 社交 & 交流"],
-            ["🧠 理性，逻辑", "❤️ 情感，直觉"],
-            ["🔬 科学家 / 工程师", "🎭 艺术家 / 公关"],
-            ["🎯 目标 & 计划", "🌿 体验 & 感受"],
-            ["👀 观察者", "🔥 领导者"]
-        ];
+<script>
+    let shortAnswers = []; // 存储短板问卷答案
+    let longAnswers = [];  // 存储长板问卷答案
+    let soulType = "";     // 灵魂结构（短板确定后不再更改）
 
-        function nextQuestion(choice) {
-            if (questionIndex < questions.length - 1) {
-                questionIndex++;
-                document.getElementById("question-text").innerText = 
-questions[questionIndex];
-                let newOptions = "";
-                options[questionIndex].forEach((option, index) => {
-                    newOptions += `<button onclick="nextQuestion(${index + 
-1})">${option}</button>`;
-                });
-                document.getElementById("options").innerHTML = newOptions;
-            } else {
-                document.getElementById("quiz").style.display = "none";
-                document.getElementById("result").style.display = "block";
-            }
+    // 短板问卷题目
+    const shortQuestions = [
+        "1. 你更喜欢以下哪种活动？",
+        "2. 你更容易被哪种情绪影响？",
+        "3. 你喜欢以下哪种职业？",
+        "4. 你更关注？",
+        "5. 你在社交场合更像？"
+    ];
+    const shortOptions = [
+        ["📖 阅读 & 思考", "💬 社交 & 交流"],
+        ["🧠 理性，逻辑", "❤️ 情感，直觉"],
+        ["🔬 科学家 / 工程师", "🎭 艺术家 / 公关"],
+        ["🎯 目标 & 计划", "🌿 体验 & 感受"],
+        ["👀 观察者", "🔥 领导者"]
+    ];
+
+    let shortIndex = 0;
+
+    function nextShortQuestion(choice) {
+        shortAnswers.push(parseInt(choice)); // 记录答案
+        if (shortIndex < shortQuestions.length - 1) {
+            shortIndex++;
+            document.getElementById("short-question-text").innerText = 
+shortQuestions[shortIndex];
+            let newOptions = "";
+            shortOptions[shortIndex].forEach((option, index) => {
+                newOptions += `<button 
+onclick="nextShortQuestion(${index})">${option}</button>`;
+            });
+            document.getElementById("short-options").innerHTML = 
+newOptions;
+        } else {
+            calculateSoulType();
+            document.getElementById("short-quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
         }
+    }
 
-        function startLongTest() {
-            document.getElementById("result").style.display = "none";
-            document.getElementById("long-test").style.display = "block";
-            loadLongTest();
+    function calculateSoulType() {
+        let score = shortAnswers.reduce((a, b) => a + b, 0);
+        if (score <= 2) {
+            soulType = "极端魂爱灵";
+        } else if (score <= 4) {
+            soulType = "中等魂爱灵";
+        } else if (score <= 6) {
+            soulType = "魂无感";
+        } else if (score <= 8) {
+            soulType = "中等魂恨灵";
+        } else {
+            soulType = "极端魂恨灵";
         }
+        document.getElementById("result-text").innerText = 
+`你的灵魂结构是：${soulType} 😊`;
+    }
 
-        let longIndex = 0;
-        const longQuestions = Array.from({ length: 30 }, (_, i) => `第 ${i 
-+ 1} 题：请回答您的选择`);
-        function loadLongTest() {
-            if (longIndex < longQuestions.length) {
-                document.getElementById("long-question-text").innerText = 
+    function startLongTest() {
+        document.getElementById("result").style.display = "none";
+        document.getElementById("long-test").style.display = "block";
+        loadLongTest();
+    }
+
+    // 长板问卷
+    const longQuestions = Array.from({ length: 30 }, (_, i) => `第 ${i + 
+1} 题：请回答您的选择`);
+    
+    let longIndex = 0;
+    
+    function loadLongTest() {
+        if (longIndex < longQuestions.length) {
+            document.getElementById("long-question-text").innerText = 
 longQuestions[longIndex];
-                document.getElementById("long-options").innerHTML = `
-                    <button onclick="nextLongQuestion()">选项 A</button>
-                    <button onclick="nextLongQuestion()">选项 B</button>
-                `;
-            } else {
-                document.getElementById("long-options").innerHTML = "";
-                document.querySelector("#long-test button").style.display 
-= "block";
-            }
-        }
-        
-        function nextLongQuestion() {
-            longIndex++;
-            loadLongTest();
-        }
-        
-        function finishLongTest() {
-            document.getElementById("long-test").style.display = "none";
-            document.getElementById("report-section").style.display = 
+            document.getElementById("long-options").innerHTML = `
+                <button onclick="nextLongQuestion(0)">选项 A</button>
+                <button onclick="nextLongQuestion(1)">选项 B</button>
+            `;
+        } else {
+            document.getElementById("long-options").innerHTML = "";
+            document.querySelector("#long-test button").style.display = 
 "block";
         }
+    }
 
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+    function nextLongQuestion(choice) {
+        longAnswers.push(parseInt(choice)); // 记录答案
+        longIndex++;
+        loadLongTest();
+    }
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(20);
-            doc.text("完整测试报告", 20, 20);
-
-            let reportContent = `
-                🎭 你的灵魂结构：中等魂爱灵
-                📌 你擅长的领域：创意 & 逻辑思维
-                🏆 推荐职业方向：设计师、编程工程师
-                ❤️ 你的理想配偶类型：情感型 & 支持型
-            `;
-
-            let y = 40;
-            reportContent.split("\n").forEach(line => {
-                doc.text(line, 20, y);
-                y += 10;
-            });
-
-            doc.save("灵魂测试报告.pdf");
-        }
-    </script>
+    function finishLongTest() {
+        alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
+    }
+</script>
+  
 </body>
 </html>
 

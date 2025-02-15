@@ -297,44 +297,41 @@ finishLongTest()
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }
     function generatePDF() {
-      // 确保 jsPDF 正确加载
-    const { jsPDF } = window.jspdf || {};
-    if (!jsPDF) {
-        alert("jsPDF 加载失败，请检查网络连接！");
-        return;
-    }
-
-    // 创建 PDF 文档
+    const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.setFont("helvetica");
 
-    // 获取测试者信息
-    let userId = document.getElementById("user-id")?.innerText || "未知";
-    let testDate = document.getElementById("test-date")?.innerText || 
-"未记录";
-    let soulType = document.getElementById("soul-type")?.innerText || 
-"未定义";
-    let mbtiType = document.getElementById("mbti-result")?.innerText || 
-"未测试";
-    let bigFiveAnalysis = 
-document.getElementById("bigfive-result")?.innerText || "未测试";
-    let careerRecommendation = 
-document.getElementById("career-recommendation")?.innerText || "未测试";
-
-    doc.setFont("helvetica");
+    // 📌 标题
+    doc.setFontSize(18);
     doc.text("🔮 前世今生大揭秘", 20, 20);
-    doc.text(`🆔 用户 ID：${userId}`, 20, 30);
-    doc.text(`📅 测试日期：${testDate}`, 20, 40);
-    doc.text(`🌀 灵魂结构：${soulType}`, 20, 50);
-    doc.text("📜 测试分析", 20, 70);
-    
-    if (mbtiType !== "未测试") {
-        doc.text(`🔍 MBTI 类型：${mbtiType}`, 20, 80);
-        doc.text(`📊 Big Five 分析：${bigFiveAnalysis}`, 20, 90);
-        doc.text(`💼 职业建议：${careerRecommendation}`, 20, 100);
-    } else {
-        doc.text("📌 你尚未完成长板测试，如需更详细的分析，请继续答题！", 
+
+    // 📌 基本信息
+    doc.setFontSize(12);
+    doc.text(`用户 ID: ${userId}`, 20, 40);
+    doc.text(`测试日期: ${testDate}`, 20, 50);
+    doc.text(`灵魂结构: ${soulType}`, 20, 60);
+
+    // 📌 第一页 - 短板内容
+    doc.text("你的灵魂结构决定了你的思维方式、职业倾向和人际关系模式……", 
 20, 80);
+
+    if (isLongTest) {
+        // 📌 第二页 - MBTI & Big Five 分析
+        doc.addPage();
+        doc.text("💡 你的核心特点（MBTI & Big Five）", 20, 20);
+        doc.text("你属于…（详细 MBTI 分析）", 20, 40);
+
+        // 📌 第三页 - 职业推荐 & 关系分析
+        doc.addPage();
+        doc.text("💼 你的最佳职业方向", 20, 20);
+        doc.text("你适合的职业是…（分析）", 20, 40);
+
+        // 📌 第四页 - IT8 专属分析（如果是 IT8）
+        if (isIT8) {
+            doc.addPage();
+            doc.text("🏆 IT8 专属职业分析", 20, 20);
+            doc.text("你的天赋来自…", 20, 40);
+        }
     }
 
     doc.save("soul_report.pdf");

@@ -71,6 +71,16 @@
             <button onclick="finishLongTest()" style="display: none;">🔍 
 查看完整报告</button>
         </div>
+        
+        <!-- ⬇️ 新增长板结果（默认隐藏，等用户做完长板测试后显示） -->
+<div id="long-test-result" style="display: none;">
+    <h2>📊 长板测试结果</h2>
+    <p id="mbti-result">MBTI 类型：未定义</p>
+    <p id="bigfive-result">Big Five 分析：未定义</p>
+    <p id="career-recommendation">职业建议：未定义</p>
+    <button onclick="generatePDF()">📥 下载 PDF 报告</button>
+</div>
+
     </div>
 
 <script>
@@ -243,9 +253,63 @@ function nextLongQuestion(choice) {
     longIndex++;
     loadLongTest();
 }
-    function finishLongTest() {
+function finishLongTest() {
+    // 假设 longAnswers 数组存储长板测试结果
+    let mbtiType = determineMBTI(longAnswers);
+    let bigFiveAnalysis = analyzeBigFive(longAnswers);
+    let careerRecommendation = recommendCareer(mbtiType, bigFiveAnalysis);
+
+    // 填充长板测试的结果
+    document.getElementById("mbti-result").innerText = `MBTI 
+类型：${mbtiType}`;
+    document.getElementById("bigfive-result").innerText = `Big Five 
+分析：${bigFiveAnalysis}`;
+    document.getElementById("career-recommendation").innerText = 
+`职业建议：${careerRecommendation}`;
+
+    // 显示长板结果
+    document.getElementById("long-test-result").style.display = "block";
+}    
+function 
+finishLongTest() 
+{
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }
+    function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    let userId = document.getElementById("user-id")?.innerText || "未知";
+    let testDate = document.getElementById("test-date")?.innerText || 
+"未记录";
+    let soulType = document.getElementById("soul-type")?.innerText || 
+"未定义";
+    let mbtiType = document.getElementById("mbti-result")?.innerText || 
+"未测试";
+    let bigFiveAnalysis = 
+document.getElementById("bigfive-result")?.innerText || "未测试";
+    let careerRecommendation = 
+document.getElementById("career-recommendation")?.innerText || "未测试";
+
+    doc.setFont("helvetica");
+    doc.text("🔮 前世今生大揭秘", 20, 20);
+    doc.text(`🆔 用户 ID：${userId}`, 20, 30);
+    doc.text(`📅 测试日期：${testDate}`, 20, 40);
+    doc.text(`🌀 灵魂结构：${soulType}`, 20, 50);
+    doc.text("📜 测试分析", 20, 70);
+    
+    if (mbtiType !== "未测试") {
+        doc.text(`🔍 MBTI 类型：${mbtiType}`, 20, 80);
+        doc.text(`📊 Big Five 分析：${bigFiveAnalysis}`, 20, 90);
+        doc.text(`💼 职业建议：${careerRecommendation}`, 20, 100);
+    } else {
+        doc.text("📌 你尚未完成长板测试，如需更详细的分析，请继续答题！", 
+20, 80);
+    }
+
+    doc.save("soul_report.pdf");
+}
+
 </script>
 
 </body>

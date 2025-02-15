@@ -49,7 +49,15 @@
         <h2>天赋，职场，婚姻一站搞定</h2>
         <p>简单、快速、不模棱两可的问卷，剖开你的灵魂结构与关系。</p>
         <p>3-5 分钟内呈现一览无余！</p>
-
+<!-- ⬇️ 短板测试结果 -->
+<div id="result">
+    <h2>🔮 你的灵魂结构是：</h2>
+    <p id="user-id">用户 ID：未生成</p>
+    <p id="test-date">测试日期：未记录</p>
+    <p id="result-text">（灵魂结构分析将在此显示）</p>
+    <button onclick="startLongTest()">📜 继续深入测试</button>
+    <button onclick="generatePDF()">📥 下载 PDF 报告</button>
+</div>
         <!-- 短板问卷 -->
         <div id="short-quiz">
             <p class="question" id="short-question-text"></p>
@@ -66,7 +74,17 @@
         <!-- 长板问卷 -->
         <div id="long-test">
             <h2>长版测试（30 题）</h2>
-            <p class="question" id="long-question-text"></p>
+<!-- ⬇️ 新增长板结果（默认隐藏，等用户做完长板测试后显示） -->
+<div id="long-test-result" style="display: none;">
+    <h2>📊 长板测试结果</h2>
+    <p id="user-id-long">用户 ID：未生成</p>
+    <p id="test-date-long">测试日期：未记录</p>
+    <p id="mbti-result">MBTI 类型：未定义</p>
+    <p id="bigfive-result">Big Five 分析：未定义</p>
+    <p id="career-recommendation">职业建议：未定义</p>
+    <button onclick="generatePDF()">📥 下载 PDF 报告</button>
+</div>            
+<p class="question" id="long-question-text"></p>
             <div class="options" id="long-options"></div>
             <button onclick="finishLongTest()" style="display: none;">🔍 
 查看完整报告</button>

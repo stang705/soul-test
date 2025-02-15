@@ -96,19 +96,32 @@
 
     let shortIndex = 0;
 
+    window.onload = function() {
+        startShortTest();  // 页面加载时开始短板问卷
+    };
+
+    function startShortTest() {
+        shortIndex = 0;
+        document.getElementById("short-quiz").style.display = "block";
+        loadShortQuestion();
+    }
+
+    function loadShortQuestion() {
+        document.getElementById("short-question-text").innerText = 
+shortQuestions[shortIndex];
+        let newOptions = "";
+        shortOptions[shortIndex].forEach((option, index) => {
+            newOptions += `<button 
+onclick="nextShortQuestion(${index})">${option}</button>`;
+        });
+        document.getElementById("short-options").innerHTML = newOptions;
+    }
+
     function nextShortQuestion(choice) {
-        shortAnswers.push(parseInt(choice)); // 记录答案
+        shortAnswers.push(choice);
         if (shortIndex < shortQuestions.length - 1) {
             shortIndex++;
-            document.getElementById("short-question-text").innerText = 
-shortQuestions[shortIndex];
-            let newOptions = "";
-            shortOptions[shortIndex].forEach((option, index) => {
-                newOptions += `<button 
-onclick="nextShortQuestion(${index})">${option}</button>`;
-            });
-            document.getElementById("short-options").innerHTML = 
-newOptions;
+            loadShortQuestion();
         } else {
             calculateSoulType();
             document.getElementById("short-quiz").style.display = "none";
@@ -139,19 +152,29 @@ newOptions;
         loadLongTest();
     }
 
-    // 长板问卷
-    const longQuestions = Array.from({ length: 30 }, (_, i) => `第 ${i + 
-1} 题：请回答您的选择`);
-    
+    // 长板问卷题目（仅列出 10 题，可添加至 30 题）
+    const longQuestions = [
+        "1. 你在工作中更喜欢？",
+        "2. 你如何做决定？",
+        "3. 你对新事物的接受度如何？",
+        "4. 你喜欢单独工作还是团队合作？",
+        "5. 你更擅长处理数据还是人与人之间的关系？",
+        "6. 你对未来的规划方式是？",
+        "7. 你觉得自己属于逻辑分析型还是创造型？",
+        "8. 你是否容易受环境影响？",
+        "9. 你如何看待规则？",
+        "10. 你更喜欢哪种学习方式？"
+    ];
+
     let longIndex = 0;
-    
+
     function loadLongTest() {
         if (longIndex < longQuestions.length) {
             document.getElementById("long-question-text").innerText = 
 longQuestions[longIndex];
             document.getElementById("long-options").innerHTML = `
-                <button onclick="nextLongQuestion(0)">选项 A</button>
-                <button onclick="nextLongQuestion(1)">选项 B</button>
+                <button onclick="nextLongQuestion()">选项 A</button>
+                <button onclick="nextLongQuestion()">选项 B</button>
             `;
         } else {
             document.getElementById("long-options").innerHTML = "";
@@ -160,8 +183,7 @@ longQuestions[longIndex];
         }
     }
 
-    function nextLongQuestion(choice) {
-        longAnswers.push(parseInt(choice)); // 记录答案
+    function nextLongQuestion() {
         longIndex++;
         loadLongTest();
     }
@@ -170,7 +192,7 @@ longQuestions[longIndex];
         alert(`测试完成！你的完整报告已生成。\n灵魂结构：${soulType}`);
     }
 </script>
-  
+
 </body>
 </html>
 
